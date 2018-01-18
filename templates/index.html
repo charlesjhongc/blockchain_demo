@@ -14,7 +14,7 @@
     <div class="container-fluid">
 
       <div class="row">
-        <div class="col-3">
+        <div class="col-2">
           <form action="{{url_for("addTX")}}" method="POST">
             <div class="form-group">
               <label for="from_addr">From address</label>
@@ -35,7 +35,7 @@
 
       <div class="row">
         {% for block in blockchain %}
-        <div class="col-2">
+        <div class="col-4">
           <div class="card">
             <div class="card-header text-center">Prev Hash : {{ block.PrevHash }}</div>
             <div class="card-body">
