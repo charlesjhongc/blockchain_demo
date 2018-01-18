@@ -11,10 +11,11 @@
   </head>
 
   <body>
-    <div class="container">
+    <div class="container-fluid">
       <div class="row">
 
-        <div class="col-4">
+        {% for block in blockchain %}
+        <div class="col-2">
           <div class="card">
             <div class="card-header text-center">Prev Hash : {{ block.PrevHash }}</div>
             <div class="card-body">
@@ -28,6 +29,8 @@
             <div class="card-footer text-center">Block Hash : {{ block.BlockHasg }}</div>
           </div>
         </div>
+        {% endfor %}
+
 
       </div>
     </div>
