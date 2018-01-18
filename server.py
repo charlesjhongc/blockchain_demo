@@ -1,42 +1,47 @@
 from flask import Flask, render_template, request, redirect
 import json
+import time
+import threading
 
 class Block:
     """A Single Block"""
-    BlockHasg = 0
-    PrevHash = 0
-    BlockHeight = 0
-    TXs = []
-
+    def __init__(self):
+        self.BlockHasg = 0
+        self.PrevHash = 0
+        self.BlockHeight = 0
+        self.TXs = []
+    #del caculateHash():
+        #self..BlockHasg = 9999
 
 app = Flask(__name__)
 blockchain = []
 currentBlock = Block()
 
-
 @app.route("/")
 def mainPage():
     return render_template('index.html', blockchain = blockchain)
 
-
-def receiveTX():
+@app.route("/addtx", methods=["POST"])
+def addTX():
+    global currentBlock
     tx = {}
-    tx['From'] = 666
-    tx['To'] = 777
-    tx['Value'] = 888
-    tx['Hash'] = 9797
+    tx['From'] = request.form["from_addr"]
+    tx['To'] = request.form["to_addr"]
+    tx['Value'] = request.form["value"]
+    tx['Hash'] = 8787
     currentBlock.TXs.append(tx)
-    return 1
+    return redirect("/")
 
 
 def newBlock():
+    print('#### Create new block')
+    global currentBlock
     currentBlock.BlockHasg = 7878
-    block = Block()
-    block.PrevHash = blockchain[len(blockchain)-1].BlockHasg
-    block.BlockHeight = len(blockchain)+1
-    blockchain.append(block)
-    currentBlock.TXs.clear()
-    #set alarm
+    currentBlock.PrevHash = blockchain[len(blockchain)-1].BlockHasg
+    currentBlock.BlockHeight = len(blockchain)+1
+    blockchain.append(currentBlock)
+    currentBlock = Block()
+    threading.Timer(10, newBlock).start()
     return
 
 
@@ -47,9 +52,6 @@ if __name__ == '__main__':
     genesisBlock.PrevHash = 0000
     genesisBlock.BlockHeight = 1
     blockchain.append(genesisBlock)
-    receiveTX()
-    receiveTX()
-    receiveTX()
-    newBlock()
-    app.debug = True
+    threading.Timer(10, newBlock).start()
+    #app.debug = True
     app.run(host='0.0.0.0', port=8000)

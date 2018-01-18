@@ -12,8 +12,28 @@
 
   <body>
     <div class="container-fluid">
-      <div class="row">
 
+      <div class="row">
+        <div class="col-3">
+          <form action="{{url_for("addTX")}}" method="POST">
+            <div class="form-group">
+              <label for="from_addr">From address</label>
+              <input type="text" class="form-control" id="from_addr" name="from_addr">
+            </div>
+            <div class="form-group">
+              <label for="to_addr">To address</label>
+              <input type="text" class="form-control" id="to_addr" name="to_addr">
+            </div>
+            <div class="form-group">
+              <label for="value">Value</label>
+              <input type="number" class="form-control" id="value" name="value">
+            </div>
+            <button type="submit" class="btn btn-primary">Add TX</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="row">
         {% for block in blockchain %}
         <div class="col-2">
           <div class="card">
@@ -30,9 +50,8 @@
           </div>
         </div>
         {% endfor %}
-
-
       </div>
+
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
