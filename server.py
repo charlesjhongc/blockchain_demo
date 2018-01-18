@@ -64,9 +64,18 @@ def addTX():
         tx.Value = amount
         tx.caculateHash()
         currentBlock.TXs.append(tx)
+        writeLog('TX : ${0} {1} -> {2}\n'.format(str(amount),sender,receiver))
         return redirect('/')
     else:
         return render_template('error.html')
+
+
+@app.route('/log')
+def dumpLog():
+    logfile = open('log.txt', 'r')
+    log = logfile.read()
+    logfile.close()
+    return log # TODO:log format
 
 
 def newBlock():
@@ -77,9 +86,19 @@ def newBlock():
     currentBlock.BlockHeight = chain_length+1
     currentBlock.caculateHash()
     blockchain.append(currentBlock)
+    writeLog('[Block #{0}] Prev={1} Hash={2}\n'.format(
+                    currentBlock.BlockHeight,
+                    currentBlock.PrevHash,
+                    currentBlock.BlockHash))
     currentBlock = Block()
     threading.Timer(10, newBlock).start()
     return
+
+
+def writeLog(logStr):
+    logfile = open('log.txt', 'a')
+    logfile.write(logStr)
+    logfile.close()
 
 
 if __name__ == '__main__':
@@ -88,6 +107,10 @@ if __name__ == '__main__':
     genesisBlock.BlockHeight = 1
     genesisBlock.caculateHash()
     blockchain.append(genesisBlock)
+    writeLog('[Block #{0}] Prev={1} Hash={2}\n'.format(
+                    genesisBlock.BlockHeight,
+                    genesisBlock.PrevHash,
+                    genesisBlock.BlockHash))
     threading.Timer(10, newBlock).start()
     #app.debug = True
     app.run(host='0.0.0.0', port=8000)
