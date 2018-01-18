@@ -18,7 +18,6 @@ class Block:
             hstr += tx.Hash
         #mt.make_tree()
         #mtRoot = mt.get_merkle_root()
-        print(hstr)
         sha_gen = hashlib.sha256()
         sha_gen.update(str.encode(self.PrevHash + hstr))
         self.BlockHash = sha_gen.hexdigest()
@@ -39,22 +38,33 @@ class Tx:
 app = Flask(__name__)
 blockchain = []
 currentBlock = Block()
+balance_table = dict()
 
-@app.route("/")
+@app.route('/')
 def mainPage():
     return render_template('index.html', blockchain = blockchain)
 
 
-@app.route("/addtx", methods=["POST"])
+@app.route('/addtx', methods=['POST'])
 def addTX():
     global currentBlock
+    sender = request.form['from_addr']
+    receiver = request.form['to_addr']
+    amount = int(request.form['value'])
     tx = Tx()
-    tx.From = request.form["from_addr"]
-    tx.To = request.form["to_addr"]
-    tx.Value = request.form["value"]
-    tx.caculateHash()
-    currentBlock.TXs.append(tx)
-    return redirect("/")
+    if sender not in balance_table:
+        balance_table[sender] = 100
+    if receiver not in balance_table:
+        balance_table[receiver] = 100
+    if balance_table[sender] >= amount:
+        balance_table[sender] -= amount;
+        balance_table[receiver] += amount;
+        tx.From = sender
+        tx.To = receiver
+        tx.Value = amount
+        tx.caculateHash()
+        currentBlock.TXs.append(tx)
+    return redirect('/')
 
 
 def newBlock():
