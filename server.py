@@ -3,6 +3,8 @@ import json
 import time
 import threading
 
+import random
+
 class Block:
     """A Single Block"""
     def __init__(self):
@@ -28,7 +30,7 @@ def addTX():
     tx['From'] = request.form["from_addr"]
     tx['To'] = request.form["to_addr"]
     tx['Value'] = request.form["value"]
-    tx['Hash'] = 8787
+    tx['Hash'] = random.randint(1, 9999)
     currentBlock.TXs.append(tx)
     return redirect("/")
 
@@ -36,9 +38,10 @@ def addTX():
 def newBlock():
     print('#### Create new block')
     global currentBlock
-    currentBlock.BlockHasg = 7878
-    currentBlock.PrevHash = blockchain[len(blockchain)-1].BlockHasg
-    currentBlock.BlockHeight = len(blockchain)+1
+    chain_length = len(blockchain)
+    currentBlock.BlockHasg = random.randint(1, 9999)
+    currentBlock.PrevHash = blockchain[chain_length-1].BlockHasg
+    currentBlock.BlockHeight = chain_length+1
     blockchain.append(currentBlock)
     currentBlock = Block()
     threading.Timer(10, newBlock).start()
@@ -48,7 +51,7 @@ def newBlock():
 if __name__ == '__main__':
     #genesisBlock = {'BlockHasg': 1234, 'PrevHash':0000, 'BlockHeight':1, 'TXs':[{'Hash':1100, 'From':1234, 'To':2345, 'Value':5000}, {'Hash':9887, 'From':1424, 'To':5566, 'Value':87}]}
     genesisBlock = Block()
-    genesisBlock.BlockHasg = 1234
+    genesisBlock.BlockHasg = random.randint(1, 9999)
     genesisBlock.PrevHash = 0000
     genesisBlock.BlockHeight = 1
     blockchain.append(genesisBlock)
