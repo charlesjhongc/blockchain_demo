@@ -64,7 +64,9 @@ def addTX():
         tx.Value = amount
         tx.caculateHash()
         currentBlock.TXs.append(tx)
-    return redirect('/')
+        return redirect('/')
+    else:
+        return render_template('error.html')
 
 
 def newBlock():
