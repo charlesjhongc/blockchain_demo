@@ -1,6 +1,4 @@
 - erase log.txt at beginning
-- way to dump log
-- error page message
 
 - sure to use balance table?
 - another way to input TXs?

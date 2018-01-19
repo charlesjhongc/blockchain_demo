@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, Response
 import hashlib
 import time
 import threading
@@ -185,7 +185,8 @@ def dumpLog():
     logfile = open('log.txt', 'r')
     log = logfile.read()
     logfile.close()
-    return log # TODO:log format
+    #return log # TODO:log format
+    return Response(log, mimetype='text/plain')
 
 
 def newBlock():
