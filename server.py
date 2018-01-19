@@ -159,6 +159,7 @@ def mainPage():
 
 @app.route('/addtx', methods=['POST'])
 def addTX():
+    # TODO:check parameter exist
     global currentBlock
     sender = request.form['from_addr']
     receiver = request.form['to_addr']
