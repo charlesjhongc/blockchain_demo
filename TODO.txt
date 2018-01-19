@@ -1,7 +1,9 @@
-- sure to use balance table?
 - erase log.txt at beginning
 - way to dump log
-- another way to input TXs?
 - error page message
+
+- sure to use balance table?
+- another way to input TXs?
+
 - README.md
 - html/css
