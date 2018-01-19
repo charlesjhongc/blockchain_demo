@@ -32,10 +32,10 @@
           </form>
         </div>
       </div>
-
-      <div class="row">
+      <hr>
+      <div class="row row-horizon">
         {% for block in blockchain %}
-        <div class="col-4">
+        <div class="col-4 inlinecol">
           <div class="card">
             <div class="card-header">
               <ul class="list-group">
@@ -44,18 +44,21 @@
                 <li class="list-group-item list-group-item-action">MerkleRoot Hash : {{ block.RootHash }}</li>
                 <li class="list-group-item list-group-item-action">Block Hash : {{ block.BlockHash }}</li>
               </ul>
+              <a class="btn btn-primary" data-toggle="collapse" href="#txArray{{ block.BlockHeight }}" role="button">Show TXs</a>
             </div>
-            <div class="card-body">
-              <ul class="list-group">
-                {% for tx in block.TXs %}
-                <li class="list-group-item list-group-item-action">
-                    <p>Hash : {{ tx.Hash }}</p>
-                    <p>From : {{ tx.From }}</p>
-                    <p>To : {{ tx.To }}</p>
-                    <p>Value : {{ tx.Value }}</p>
-                </li>
-                {% endfor %}
-              </ul>
+            <div class="collapse" id="txArray{{ block.BlockHeight }}">
+              <div class="card-body">
+                <ul class="list-group">
+                  {% for tx in block.TXs %}
+                  <li class="list-group-item list-group-item-action">
+                      <p>Hash : {{ tx.Hash }}</p>
+                      <p>From : {{ tx.From }}</p>
+                      <p>To : {{ tx.To }}</p>
+                      <p>Value : {{ tx.Value }}</p>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
             </div>
           </div>
         </div>

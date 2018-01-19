@@ -130,7 +130,10 @@ class Block:
         mt.make_tree()
         self.RootHash = mt.get_merkle_root()
         sha_gen = hashlib.sha256()
-        sha_gen.update(str.encode(self.PrevHash + str(self.RootHash)))
+        if self.RootHash != None:
+            sha_gen.update(str.encode(self.PrevHash + self.RootHash))
+        else:
+            sha_gen.update(str.encode(self.PrevHash))
         self.BlockHash = sha_gen.hexdigest()
 
 class Tx:
@@ -192,7 +195,6 @@ def dumpLog():
 
 
 def newBlock():
-    print('#### Create new block')
     global currentBlock
     chain_length = len(blockchain)
     currentBlock.PrevHash = blockchain[chain_length-1].BlockHash
