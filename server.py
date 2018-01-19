@@ -149,6 +149,8 @@ app = Flask(__name__)
 blockchain = []
 currentBlock = Block()
 balance_table = dict()
+# Erase old log data
+open('log.txt', 'w').close()
 
 @app.route('/')
 def mainPage():
@@ -185,7 +187,6 @@ def dumpLog():
     logfile = open('log.txt', 'r')
     log = logfile.read()
     logfile.close()
-    #return log # TODO:log format
     return Response(log, mimetype='text/plain')
 
 
