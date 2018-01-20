@@ -4,6 +4,7 @@ import time
 import threading
 
 class MerkleTools(object):
+    """Merkle Tree Tool"""
     def __init__(self, hash_type="sha256"):
         hash_type = hash_type.lower()
         if hash_type in ['sha256', 'md5', 'sha224', 'sha384', 'sha512',
@@ -155,6 +156,7 @@ balance_table = dict()
 # Erase old log data
 open('log.txt', 'w').close()
 
+
 @app.route('/')
 def mainPage():
     return render_template('index.html', blockchain = blockchain)
@@ -164,26 +166,31 @@ def mainPage():
 def addTX():
     # TODO:check parameter exist
     global currentBlock
-    sender = request.form['from_addr']
-    receiver = request.form['to_addr']
-    amount = int(request.form['value'])
-    tx = Tx()
-    if sender not in balance_table:
-        balance_table[sender] = 100
-    if receiver not in balance_table:
-        balance_table[receiver] = 100
-    if balance_table[sender] >= amount:
-        balance_table[sender] -= amount;
-        balance_table[receiver] += amount;
-        tx.From = sender
-        tx.To = receiver
-        tx.Value = amount
-        tx.caculateHash()
-        currentBlock.TXs.append(tx)
-        writeLog('TX : ${0} {1} -> {2}\n'.format(str(amount),sender,receiver))
-        return redirect('/')
-    else:
-        return render_template('error.html')
+    try:
+        sender = request.form['from_addr']
+        receiver = request.form['to_addr']
+        amount = int(request.form['value'])
+        tx = Tx()
+        if sender not in balance_table:
+            balance_table[sender] = 100
+        if receiver not in balance_table:
+            balance_table[receiver] = 100
+        if balance_table[sender] >= amount:
+            balance_table[sender] -= amount;
+            balance_table[receiver] += amount;
+            tx.From = sender
+            tx.To = receiver
+            tx.Value = amount
+            tx.caculateHash()
+            currentBlock.TXs.append(tx)
+            writeLog('TX : ${0} {1} -> {2}\n'.format(str(amount),sender,receiver))
+            return redirect('/')
+        else:
+            return render_template('error.html',
+                                msg = 'Sender\'s balance is not enough.')
+    except KeyError:
+        return render_template('error.html',
+                            msg = 'Parameter is not valid.')
 
 
 @app.route('/log')
