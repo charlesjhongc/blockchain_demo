@@ -8,3 +8,5 @@
 
 - live version?
 - no ajax....
+
+- pip8

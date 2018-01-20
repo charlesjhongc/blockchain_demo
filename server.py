@@ -132,9 +132,10 @@ class Block:
         self.RootHash = mt.get_merkle_root()
         sha_gen = hashlib.sha256()
         if self.RootHash != None:
-            sha_gen.update(str.encode(self.PrevHash + self.RootHash))
+            sha_gen.update(bytearray.fromhex(self.PrevHash)
+                        + bytearray.fromhex(self.RootHash))
         else:
-            sha_gen.update(str.encode(self.PrevHash))
+            sha_gen.update(bytearray.fromhex(self.PrevHash))
         self.BlockHash = sha_gen.hexdigest()
 
 class Tx:
@@ -224,7 +225,7 @@ def writeLog(logStr):
 
 if __name__ == '__main__':
     genesisBlock = Block()
-    genesisBlock.PrevHash = '0'
+    genesisBlock.PrevHash = '00' * 32
     genesisBlock.BlockHeight = 1
     genesisBlock.caculateHash()
     blockchain.append(genesisBlock)
