@@ -1,10 +1,7 @@
-- use byte array to hash
-
 - sure to use balance table?
 - another way to input TXs?
 
 - README.md
-- html/css
 
 - live version?
 - no ajax....
