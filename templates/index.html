@@ -44,7 +44,7 @@
                 <li class="list-group-item list-group-item-action">MerkleRoot Hash : {{ block.RootHash }}</li>
                 <li class="list-group-item list-group-item-action">Block Hash : {{ block.BlockHash }}</li>
               </ul>
-              <a class="btn btn-primary" data-toggle="collapse" href="#txArray{{ block.BlockHeight }}" role="button">Show TXs</a>
+              <a class="btn btn-primary" data-toggle="collapse" href="#txArray{{ block.BlockHeight }}" role="button">Show TXs (Total:{{ block.TXs|length }})</a>
             </div>
             <div class="collapse" id="txArray{{ block.BlockHeight }}">
               <div class="card-body">
