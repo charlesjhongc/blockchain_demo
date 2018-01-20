@@ -3,6 +3,9 @@ import hashlib
 import time
 import threading
 
+# class MerkleTools is referenced from https://github.com/Tierion/pymerkletools
+# Other than this calss is implemented by myself
+
 
 class MerkleTools(object):
     """Merkle Tree Tool"""
