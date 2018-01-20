@@ -33,3 +33,4 @@ python server.py
 - Note : I didn't implement fronend AJAX, so please refresh browser to fetch latest blockchain status.
 
 ## Screenshot
+![screenshot](screenshot.png)
