@@ -1,7 +1,7 @@
+- use byte array to hash
+
 - sure to use balance table?
 - another way to input TXs?
-
-- # of TXs
 
 - README.md
 - html/css
