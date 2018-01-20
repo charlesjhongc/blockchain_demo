@@ -1,8 +1,0 @@
-- sure to use balance table?
-- another way to input TXs?
-
-- README.md
-
-- no ajax....
-
-- pip8
