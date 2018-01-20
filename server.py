@@ -203,7 +203,11 @@ def dumpLog():
 
 def newBlock():
     global currentBlock
+    global blockchain
     chain_length = len(blockchain)
+    if chain_length == 23:
+        reset()
+        return
     currentBlock.PrevHash = blockchain[chain_length-1].BlockHash
     currentBlock.BlockHeight = chain_length+1
     currentBlock.caculateHash()
@@ -222,6 +226,26 @@ def writeLog(logStr):
     logfile.write(logStr)
     logfile.close()
 
+
+def reset():
+    global blockchain
+    global balance_table
+    global currentBlock
+    blockchain = []
+    balance_table = dict()
+    currentBlock = Block()
+    # Erase old log data
+    open('log.txt', 'w').close()
+    genesisBlock = Block()
+    genesisBlock.PrevHash = '00' * 32
+    genesisBlock.BlockHeight = 1
+    genesisBlock.caculateHash()
+    blockchain.append(genesisBlock)
+    writeLog('[Block #{0}] Prev={1} Hash={2}\n'.format(
+                    genesisBlock.BlockHeight,
+                    genesisBlock.PrevHash,
+                    genesisBlock.BlockHash))
+    threading.Timer(10, newBlock).start()
 
 if __name__ == '__main__':
     genesisBlock = Block()
