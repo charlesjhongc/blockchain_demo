@@ -3,6 +3,7 @@ import hashlib
 import time
 import threading
 
+
 class MerkleTools(object):
     """Merkle Tree Tool"""
     def __init__(self, hash_type="sha256"):
@@ -87,7 +88,8 @@ class MerkleTools(object):
             proof = []
             for x in range(len(self.levels) - 1, 0, -1):
                 level_len = len(self.levels[x])
-                if (index == level_len - 1) and (level_len % 2 == 1):  # skip if this is an odd end node
+                # skip if this is an odd end node
+                if (index == level_len - 1) and (level_len % 2 == 1):
                     index = int(index / 2.)
                     continue
                 is_right_node = index % 2
@@ -109,12 +111,15 @@ class MerkleTools(object):
                 try:
                     # the sibling is a left node
                     sibling = bytearray.fromhex(p['left'])
-                    proof_hash = self.hash_function(sibling + proof_hash).digest()
+                    proof_hash = self.hash_function(sibling +
+                                                    proof_hash).digest()
                 except:
                     # the sibling is a right node
                     sibling = bytearray.fromhex(p['right'])
-                    proof_hash = self.hash_function(proof_hash + sibling).digest()
+                    proof_hash = self.hash_function(proof_hash +
+                                                    sibling).digest()
             return proof_hash == merkle_root
+
 
 class Block:
     """A Single Block"""
@@ -124,6 +129,7 @@ class Block:
         self.BlockHash = '0'
         self.BlockHeight = 0
         self.TXs = []
+
     def caculateHash(self):
         mt = MerkleTools(hash_type="sha256")
         for tx in self.TXs:
@@ -131,12 +137,13 @@ class Block:
         mt.make_tree()
         self.RootHash = mt.get_merkle_root()
         sha_gen = hashlib.sha256()
-        if self.RootHash != None:
-            sha_gen.update(bytearray.fromhex(self.PrevHash)
-                        + bytearray.fromhex(self.RootHash))
+        if self.RootHash is not None:
+            sha_gen.update(bytearray.fromhex(self.PrevHash) +
+                           bytearray.fromhex(self.RootHash))
         else:
             sha_gen.update(bytearray.fromhex(self.PrevHash))
         self.BlockHash = sha_gen.hexdigest()
+
 
 class Tx:
     """A Transaction Record"""
@@ -145,10 +152,12 @@ class Tx:
         self.To = ''
         self.Value = 0
         self.Hash = ''
+
     def caculateHash(self):
         sha_gen = hashlib.sha256()
         sha_gen.update(str.encode(self.From+self.To+str(self.Value)))
         self.Hash = sha_gen.hexdigest()
+
 
 app = Flask(__name__)
 blockchain = []
@@ -160,7 +169,7 @@ open('log.txt', 'w').close()
 
 @app.route('/')
 def mainPage():
-    return render_template('index.html', blockchain = blockchain)
+    return render_template('index.html', blockchain=blockchain)
 
 
 @app.route('/addtx', methods=['POST'])
@@ -176,21 +185,22 @@ def addTX():
         if receiver not in balance_table:
             balance_table[receiver] = 100
         if balance_table[sender] >= amount:
-            balance_table[sender] -= amount;
-            balance_table[receiver] += amount;
+            balance_table[sender] -= amount
+            balance_table[receiver] += amount
             tx.From = sender
             tx.To = receiver
             tx.Value = amount
             tx.caculateHash()
             currentBlock.TXs.append(tx)
-            writeLog('TX : ${0} {1} -> {2}\n'.format(str(amount),sender,receiver))
+            writeLog('TX : ${0} {1} -> {2}\n'.format(
+                                        str(amount), sender, receiver))
             return redirect('/')
         else:
             return render_template('error.html',
-                                msg = 'Sender\'s balance is not enough.')
+                                   msg='Sender\'s balance is not enough.')
     except KeyError:
         return render_template('error.html',
-                            msg = 'Parameter is not valid.')
+                               msg='Parameter is not valid.')
 
 
 @app.route('/log')
@@ -234,5 +244,5 @@ if __name__ == '__main__':
                     genesisBlock.PrevHash,
                     genesisBlock.BlockHash))
     threading.Timer(10, newBlock).start()
-    #app.debug = True
+    # app.debug = True
     app.run(host='0.0.0.0', port=8000)
