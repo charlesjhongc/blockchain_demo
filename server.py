@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, Response
 import hashlib
-import time
 import threading
 
 # class MerkleTools is referenced from https://github.com/Tierion/pymerkletools
