@@ -208,9 +208,8 @@ def addTX():
 
 @app.route('/log')
 def dumpLog():
-    logfile = open('log.txt', 'r')
-    log = logfile.read()
-    logfile.close()
+    with open('log.txt', 'r') as logfile:
+        log = logfile.read()
     return Response(log, mimetype='text/plain')
 
 
@@ -231,9 +230,8 @@ def newBlock():
 
 
 def writeLog(logStr):
-    logfile = open('log.txt', 'a')
-    logfile.write(logStr)
-    logfile.close()
+    with open('log.txt', 'a') as logfile:
+        logfile.write(logStr)
 
 
 if __name__ == '__main__':
